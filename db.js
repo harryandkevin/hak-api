@@ -1,17 +1,16 @@
-const { Database, Model } = require('mongorito');
+import Mongoose from 'mongoose';
 const { MONGODB_URI } = process.env;
 
-const db = new Database(MONGODB_URI);
-
-const connect = async () => {
+export const connect = async (fn) => {
   try {
-    await db.connect();
+    await Mongoose.connect(MONGODB_URI)
     console.log('Connection to Mongo successful');
+    if (typeof fn === 'function') {
+      fn();
+    }
   } catch (e) {
     console.log('Failed to connect to Mongo', e);
   }
 };
 
-connect();
 
-module.exports = db;
