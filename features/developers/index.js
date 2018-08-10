@@ -4,7 +4,10 @@ import { Model as Developers } from './model';
 
 const app = express();
 
-const route = app.get('/developers', async (req, res) => {
+/**
+ * Adds developer route
+ */
+export const route = app.get('/developers', async (req, res) => {
   try {
     const developers = await Developers.find();
     res.send(developers.map(item => item.toObject({ virtuals: true, _id: false })));
@@ -12,7 +15,4 @@ const route = app.get('/developers', async (req, res) => {
     console.error(e);
     res.send('Error');
   }
-
 });
-
-module.exports = route;
