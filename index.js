@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('babel-register')
 
 const express = require('express');
 const db = require('./db');
@@ -8,7 +9,10 @@ const Developers = require('./features/developers');
 
 console.log(`Fish is ${FISH}`);
 
+//  Make a connection
+db.connect();
+
 express()
   .get('/', (req, res) => res.send({"message":"Welcome, friends!"}))
-  .use(Developers)
+  .use('/api', Developers)
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))

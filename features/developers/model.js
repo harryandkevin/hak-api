@@ -1,12 +1,34 @@
-const db = require('../../db.js');
-const { Model } = require('mongorito');
+import Mongoose from 'mongoose';
 
-class Developers extends Model {
-  collection() {
-		return 'Developers';
+/**
+ * Developer Base Class
+ */
+export class Developer {
+	/**
+	 * Setup virtual for fullname
+	 */
+	get fullName() {
+		return `${this.firstName} ${this.lastName}`;
 	}
 }
 
-db.register(Developers);
+export const schema = {
+	firstName: String,
+	lastName: String,
+	email: String,
+	motto: String
+};
 
-module.exports = Developers;
+const options = {
+	toObject: {
+		transform: (doc, ret) => {
+      delete ret._id
+      return ret;
+    }
+	}
+};
+
+const mongooseSchema = new Mongoose.Schema(schema, options); 
+mongooseSchema.loadClass(Developer);
+
+export const Model = Mongoose.model('Developer', mongooseSchema);
