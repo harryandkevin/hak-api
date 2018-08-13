@@ -14,5 +14,7 @@ db.connect();
 
 express()
   .get('/', (req, res) => res.send({"message":"Welcome, friends!"}))
-  .use('/api', Developers)
+  .use('/api', [
+    Developers.router,
+  ])
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))

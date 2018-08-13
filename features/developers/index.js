@@ -2,12 +2,14 @@ import express from 'express';
 import mongoose from 'mongoose';
 import { Model as Developers } from './model';
 
-const app = express();
+export const router = express.Router();
 
 /**
- * Adds developer route
+ * Gets a list of developers
+ * @param {Object} req The Request
+ * @param {Object} res The response
  */
-export const route = app.get('/developers', async (req, res) => {
+export async function getList (req, res) {
   try {
     const developers = await Developers.find();
     res.send(developers.map(item => item.toObject({ virtuals: true, _id: false })));
@@ -15,4 +17,7 @@ export const route = app.get('/developers', async (req, res) => {
     console.error(e);
     res.send('Error');
   }
-});
+}
+
+// ROUTES
+router.get('/developers', getList);
